@@ -4,11 +4,12 @@ export const resolvers = {
     Query: {
         jobs: () => getJobs()
     },
-    Job:{
-        date:(job)=> toIsoDate(job.createdAt)
+    Job  : {
+        title: (job) => job.title,
+        date : (job) => toIsoDate(job.createdAt)
     }
 }
 
-function toIsoDate(value){
+function toIsoDate(value) {
     return value.slice(0, 'yyyy-mm-dd'.length)
 }
