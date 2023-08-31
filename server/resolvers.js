@@ -17,7 +17,7 @@ export const resolvers = {
         }
     },
     Mutation: {
-        createJob: (_root, {title, description}) => createJob({title, description, companyId: 'FjcJCHJALA4i'})
+        createJob: (_root, {input: {title, description}}) => createJob({title, description, companyId: 'FjcJCHJALA4i'})
     },
     Job     : {
         title  : (job) => job.title,
