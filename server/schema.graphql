@@ -4,6 +4,10 @@ type Query{
     jobs: [Job!]
 }
 
+type Mutation{
+    createJob(title: String!, description: String): Job
+}
+
 """
 Represents a job ad posted to our board
 """
@@ -23,3 +27,4 @@ type Company{
     description: String
     jobs: [Job!]!
 }
+
