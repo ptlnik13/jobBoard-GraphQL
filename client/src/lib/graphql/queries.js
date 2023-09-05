@@ -31,7 +31,8 @@ export async function getJobs() {
             }
         }
     `
-    const {jobs} = await client.request(query)
+    // const {jobs} = await client.request(query)
+    const {data: {jobs}} = await apolloClient.query({query});
     return jobs;
 }
 
@@ -50,7 +51,7 @@ export async function getJob(id) {
             }
         }
     `
-    const {job} = await client.request(query, {id})
+    const {data: {job}} = await apolloClient.query({query, variables: {id}});
     return job;
 }
 
@@ -70,7 +71,7 @@ export async function getCompany(id) {
             }
         }
     `
-    const {company} = await client.request(query, {id});
+    const {data: {company}} = await apolloClient.query({query, variables: {id}});
     return company;
 }
 
