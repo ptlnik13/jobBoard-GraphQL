@@ -17,7 +17,14 @@ export const resolvers = {
         }
     },
     Mutation: {
-        createJob: (_root, {input: {title, description}}) => createJob({title, description, companyId: 'FjcJCHJALA4i'}),
+        createJob: (_root, {input: {title, description}}, {auth}) => {
+            if (!auth) {
+                throw unAuthorizedError('Missing authentication')
+            }
+            return createJob({
+                title, description, companyId: 'FjcJCHJALA4i'
+            })
+        },
         deleteJob: (_root, {id}) => deleteJob(id),
         updateJob: (_root, {id, input: {title, description}}) => updateJob({id, title, description})
     },
@@ -34,6 +41,11 @@ export const resolvers = {
 function notFoundError(message) {
     return new GraphQLError(message,
         {extensions: {code: 'NOT_FOUND'}})
+}
+
+function unAuthorizedError(message) {
+    return new GraphQLError(message,
+        {extensions: {code: 'UNAUTHORIZED'}})
 }
 
 function toIsoDate(value) {
