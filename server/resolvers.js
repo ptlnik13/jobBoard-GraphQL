@@ -4,12 +4,12 @@ import {GraphQLError} from "graphql";
 
 export const resolvers = {
     Query   : {
-        job    : async (_root, {id}) => {
+        job        : async (_root, {id}) => {
             const job = await getJob(id)
             if (!job) throw notFoundError(`No Job found with id ${id}`);
             return job;
         },
-        jobs   : () => getJobs(),
+        jobs       : (_root, {limit}) => getJobs(limit),
         companyById: async (__root, {id}) => {
             const company = await getCompany(id)
             if (!company) throw notFoundError(`No Company found with id ${id}`);
