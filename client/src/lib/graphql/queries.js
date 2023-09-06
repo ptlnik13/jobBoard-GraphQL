@@ -11,7 +11,7 @@ const authLink = new ApolloLink((operation, fwd) => {
     }
     return fwd(operation);
 })
-const apolloClient = new ApolloClient({
+export const apolloClient = new ApolloClient({
     link : concat(authLink, httpLink),
     cache: new InMemoryCache(),
 })
@@ -37,6 +37,22 @@ const jobByIdQuery = gql`
     ${jobDetailFragment}
 `;
 
+export const companyByIdQuery = gql`
+    query companyById($id: ID!){
+        companyById(id: $id){
+            id
+            name
+            description
+            jobs {
+                id
+                date
+                title
+                description
+            }
+        }
+    }
+`
+
 export async function getJobs() {
     const query = jobByIdQuery;
     const {data: {jobs}} = await apolloClient.query({query, fetchPolicy: 'network-only'});
@@ -60,26 +76,6 @@ export async function getJob(id) {
     `
     const {data: {job}} = await apolloClient.query({query, variables: {id}});
     return job;
-}
-
-export async function getCompany(id) {
-    const query = gql`
-        query company($id: ID!){
-            company(id: $id){
-                id
-                name
-                description
-                jobs {
-                    id
-                    date
-                    title
-                    description
-                }
-            }
-        }
-    `
-    const {data: {company}} = await apolloClient.query({query, variables: {id}});
-    return company;
 }
 
 export async function createJob({title, description}) {

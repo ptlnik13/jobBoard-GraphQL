@@ -1,38 +1,28 @@
 import {useParams} from 'react-router';
-import {useEffect, useState} from "react";
-import {getCompany} from "../lib/graphql/queries";
+import {companyByIdQuery} from "../lib/graphql/queries";
 import JobList from "../components/JobList";
+import {useQuery} from "@apollo/client";
 
 
 function CompanyPage() {
     const {companyId} = useParams();
-    const [state, setState] = useState({company: null, loading: true, error: false})
-    useEffect(() => {
-        (async () => {
-            try {
+    const {data, loading, error} = useQuery(companyByIdQuery, {variables: {id: companyId}})
 
-                const company = await getCompany(companyId);
-                setState({company, loading: false, error: false})
-            } catch (e) {
-                setState({company: null, loading: false, error: true});
-            }
-        })();
-    }, [companyId]);
-    const {company, loading, error} = state;
     if (error) return <div>Data is Unavailable</div>
     if (loading) return <div>Loading...</div>
+    const {companyById} = data;
 
     return (
         <div>
             <h1 className="title">
-                {company.name}
+                {companyById.name}
             </h1>
             <div className="box">
-                {company.description}
+                {companyById.description}
             </div>
 
-            <h2 className='title is-5'>Jobs at {company.name}</h2>
-            <JobList jobs={company.jobs}/>
+            <h2 className='title is-5'>Jobs at {companyById.name}</h2>
+            <JobList jobs={companyById.jobs}/>
         </div>
     );
 }
