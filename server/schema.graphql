@@ -1,7 +1,7 @@
 type Query{
     companyById(id: ID!): Company
     job(id: ID!): Job
-    jobs(limit: Int, offset: Int): [Job!]
+    jobs(limit: Int, offset: Int): JobSublist
 }
 
 type Mutation{
@@ -21,6 +21,10 @@ type Job{
     title: String!
     description: String
     company: Company!
+}
+type JobSublist{
+    items: [Job!]
+    totalCount: Int!
 }
 
 type Company{
