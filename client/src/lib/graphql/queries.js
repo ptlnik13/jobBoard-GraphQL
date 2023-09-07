@@ -29,8 +29,8 @@ const jobDetailFragment = gql`
 `
 
 export const jobsQuery = gql`
-    query jobs{
-        jobs{
+    query jobs($limit: Int, $offset: Int){
+        jobs(limit: $limit, offset: $offset){
             ...jobDetail
         }
     }
