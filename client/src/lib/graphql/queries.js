@@ -31,7 +31,10 @@ const jobDetailFragment = gql`
 export const jobsQuery = gql`
     query jobs($limit: Int, $offset: Int){
         jobs(limit: $limit, offset: $offset){
-            ...jobDetail
+            items{
+                ...jobDetail
+            }
+            totalCount
         }
     }
     ${jobDetailFragment}
